@@ -3,19 +3,48 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "latest",
+    "@material-ui/icons": "latest",
+    "@material-ui/lab": "latest",
+    "@material-ui/pickers": "latest",
+    "@material-ui/styles": "latest",
+    "@material-ui/system": "latest",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
+    "history": "latest",
+    "node-sass": "^4.13.1",
+    "ramda": "^0.27.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "react-router-config": "^5.1.1",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "web-vitals": "^1.0.1"
+  },
+  "devDependencies": {
+    "@babel/plugin-syntax-jsx": "^7.12.13",
+    "eslint": "^7.21.0",
+    "eslint-config-standard": "latest",
+    "eslint-plugin-import": "latest",
+    "eslint-plugin-node": "latest",
+    "eslint-plugin-prettier": "latest",
+    "eslint-plugin-react": "latest",
+    "eslint-plugin-standard": "latest",
+    "husky": "latest",
+    "prettier": "latest",
+    "prettier-eslint": "latest",
+    "prettier-eslint-cli": "latest",
+    "prettier-standard": "latest",
+    "standard": "latest"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "lint": "./node_modules/.bin/eslint --fix src/*/*.* && echo 'Lint complete.'",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "prepare": "husky install"
   },
   "eslintConfig": {
     "extends": [
@@ -34,5 +63,20 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "standard": {
+    "env": [
+      "jest"
+    ]
+  },
+  "lint-staged": {
+    "src/**/**.js": [
+      "prettier-standard"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint && npm run test"
+    }
   }
 }
