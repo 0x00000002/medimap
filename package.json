@@ -42,8 +42,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "lint": "./node_modules/.bin/eslint --fix src/*/*.* && echo 'Lint complete.'",
-    "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "test": "react-scripts test --watchAll=false",
+    "watch": "react-scripts test",
     "prepare": "husky install"
   },
   "eslintConfig": {

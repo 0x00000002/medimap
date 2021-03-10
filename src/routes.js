@@ -2,18 +2,22 @@
 /* eslint-disable react/display-name */
 import React from 'react'
 import { Redirect } from 'react-router-dom'
-import WithAuth from './layouts/Auth'
-import { Signin, DisableAccount } from './views/Signin'
-import ErrorPage from './views/Error'
-import Settings from './views/Settings'
-
-import { Authenticator } from 'aws-amplify-react'
-import ExchangePage from './views/Exchange/ExchangePage'
+import { LoginPage } from './components/pages/'
+import ErrorPage from './components/Error'
 
 const wrapUnauthenticated = Component => props => {
   return (
     <>
       <Component />
+    </>
+  )
+}
+
+const Authenticator = props => {
+  return (
+    <>
+      <h2>You should sign in</h2>
+      {props.children}
     </>
   )
 }
@@ -26,49 +30,23 @@ const routes = [
   },
 
   {
-    path: '/disableaccount',
-    exact: true,
-    component: DisableAccount
-  },
-  {
     path: '/errors',
     component: ErrorPage
   },
   {
     path: '/',
-    component: props => (
-      <div id='authenticator'>
-        <Authenticator hideDefault>
-          <WithAuth {...props} />
-        </Authenticator>
-      </div>
-    ),
+    component: props => <Authenticator {...props} />,
     routes: [
       {
         path: '/login',
         exact: true,
-        component: Signin
+        component: LoginPage
       },
 
       {
-        path: '/exchange',
-        exact: true,
-        component: ExchangePage
-      },
-      {
-        path: '/exchange/:market',
-        exact: true,
-        component: ExchangePage
-      },
-      {
         path: '/settings',
         exact: true,
-        component: Settings
-      },
-      {
-        path: '/settings/:tab',
-        exact: true,
-        component: Settings
+        component: LoginPage
       }
     ]
   },
