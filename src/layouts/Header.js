@@ -1,7 +1,8 @@
 import React, { useContext } from 'react'
 // import PropTypes from 'prop-types'
-import logo from './../../assets/images/logo.svg'
+import { AppContext } from '../hooks'
 import { makeStyles } from '@material-ui/core/styles'
+import logo from './../assets/images/logo.svg'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
@@ -24,7 +25,7 @@ const useStyles = makeStyles(theme => ({
 
 export const Header = props => {
   const classes = useStyles()
-  const { userName, loginFn, logoutFn } = useContext()
+  const { userName, loginFn, logoutFn } = useContext(AppContext)
 
   const onClick = userName ? logoutFn : loginFn
   const buttonText = userName ? 'Logout' : 'Login'
