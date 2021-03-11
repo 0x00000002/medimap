@@ -1,26 +1,14 @@
-import React, { useEffect, useContext, useState, useMemo } from 'react'
-import { renderRoutes } from 'react-router-config'
-import AutoLogoutPopup from './components/autoLogoutPopup'
-import clsx from 'clsx'
+/* eslint-disable multiline-ternary */
+import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
-import Header from '../../components/Header/Header.jsx'
-import HeaderLinks from '../../components/Header/HeaderLinks.jsx'
-import { Cache } from 'aws-amplify'
-import { Zendesk } from '../../views/Zendesk'
+import { createBrowserHistory } from 'history'
+
+const history = createBrowserHistory()
 
 const Auth = props => {
-  const { classes, route, authState, location, history } = props
-  const [openNavBarMobile, setOpenNavBarMobile] = useState(false)
-  const { alert, hideAlert, setFxRate, setFees } = useContext(AppContext)
-  const user = useUser({ authState, location })
-  const { request } = useAxios()
-  const total = useTotal({
-    authState,
-    location,
-    accountId: user?.user?.accountId
-  })
-
-  const isLogin = useMemo(() => {
+  console.log({ props })
+  const { authState, location, route } = props
+  const isLogged = useMemo(() => {
     const { pathname } = location
     if (authState === 'loading') {
       return false
@@ -51,97 +39,22 @@ const Auth = props => {
       return true
     }
     return true
-  }, [authState, location.pathname])
-
-  const getFiatRate = async () => {
-    const [fxRatesData] = (await request.GET(PATH.fxRates({}).fxRates)) || [
-      { rate: 1, buy: 1, sell: 1 }
-    ]
-    setFxRate(fxRatesData)
-    Cache.setItem('fxRate', JSON.stringify(fxRatesData))
-  }
-
-  const getFees = async () => {
-    const [fees] = await request.GET(PATH.orders({}).fees)
-    setFees(fees)
-  }
-
-  useEffect(() => {
-    isLogin && getFiatRate()
-    isLogin && getFees()
-  }, [isLogin])
+  }, [authState])
 
   return (
-    <div className={clsx(classes.height100)}>
-      <UserContext.Provider value={{ ...user, ...total }}>
-        <TotalContext.Provider value={{ ...total }}>
-          <div
-            className={clsx(
-              classes.container,
-              classes.height100,
-              classes.paddingTopOuter,
-              classes.autoScroller
-            )}
-          >
-            <CssBaseline />
-            {isLogin ? (
-              <Topbar
-                onOpenNavBarMobile={() => setOpenNavBarMobile(true)}
-                authState={authState}
-                {...props}
-              />
-            ) : (
-              <Header
-                brand=''
-                links={<HeaderLinks dropdownHoverColor='info' />}
-                // fixed
-                color='rose'
-                changeColorOnScroll={{
-                  height: 30,
-                  color: 'rose'
-                }}
-              />
-            )}
-            {isLogin && (
-              <Sidebar
-                className={classes.navBar}
-                onMobileClose={() => setOpenNavBarMobile(false)}
-                openMobile={openNavBarMobile}
-                {...props}
-              />
-            )}
-
-            <Zendesk isLogin={isLogin} />
-
-            <main className={clsx(classes.width100)}>
-              {authState === 'loading' && <LinearProgress />}
-              {authState !== 'loading' &&
-                renderRoutes(route.routes, { ...props })}
-            </main>
-
-            <Snackbar
-              open={alert.open}
-              anchorOrigin={{
-                vertical: authState === 'signedIn' ? 'top' : 'bottom',
-                horizontal: 'center'
-              }}
-              autoHideDuration={4000}
-              onClose={hideAlert}
-            >
-              <Alert onClose={hideAlert} severity={alert.type}>
-                {alert.message}
-              </Alert>
-            </Snackbar>
-            <AutoLogoutPopup authState={authState} />
-          </div>
-        </TotalContext.Provider>
-      </UserContext.Provider>
+    <div>
+      {/* <UserContext.Provider value={{ ...user }}> */}
+      <div>{isLogged ? <h2>Ура!</h2> : <h2>Увы нет</h2>}</div>
+      {route.component}
+      {/* </UserContext.Provider> */}
     </div>
   )
 }
 
 Auth.propTypes = {
-  route: PropTypes.object
+  route: PropTypes.object,
+  location: PropTypes.string,
+  authState: PropTypes.object
 }
 
-export default withStyles(styles)(Auth)
+export default Auth

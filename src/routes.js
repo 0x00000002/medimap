@@ -3,8 +3,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Redirect } from 'react-router-dom'
-import { LoginPage, MainPage } from './pages/'
+import {
+  LoginPage,
+  Dashboard,
+  Search as FacilitiesSearch,
+  AddNew as AddNewFacility
+} from './pages/'
 import ErrorPage from './components/Error'
+import WithAuth from './components/Auth'
 
 const wrapUnauthenticated = Component => props => {
   return (
@@ -14,7 +20,9 @@ const wrapUnauthenticated = Component => props => {
   )
 }
 
-const Authenticator = ({ children }) => {
+const Authenticator = props => {
+  const { children } = props
+  console.log({ props })
   return (
     <>
       <h2>You should sign in</h2>
@@ -35,18 +43,29 @@ const routes = [
   },
   {
     path: '/',
-    component: props => <Authenticator {...props} />,
+    exact: true,
+    component: props => <WithAuth {...props} />,
     routes: [
       {
-        path: '/MainPage',
+        path: '/dashboard',
         exact: true,
-        component: MainPage
-      },
-
+        component: Dashboard
+      }
+    ]
+  },
+  {
+    path: '/facilities',
+    component: props => <WithAuth {...props} />,
+    routes: [
       {
-        path: '/settings',
+        path: '/facilities/search',
         exact: true,
-        component: LoginPage
+        component: FacilitiesSearch
+      },
+      {
+        path: '/facilities/add',
+        exact: true,
+        component: AddNewFacility
       }
     ]
   },
