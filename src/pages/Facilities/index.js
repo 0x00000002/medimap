@@ -1,2 +1,2 @@
-export * from './Search'
+export * from './Facilities'
 export * from './AddNew'

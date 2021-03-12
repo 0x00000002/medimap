@@ -9,8 +9,8 @@ import {
   Search as FacilitiesSearch,
   AddNew as AddNewFacility
 } from './pages/'
+import Page from './layouts/Page'
 import ErrorPage from './components/Error'
-import WithAuth from './components/Auth'
 
 const wrapUnauthenticated = Component => props => {
   return (
@@ -33,7 +33,7 @@ const Authenticator = props => {
 
 const routes = [
   {
-    path: '/',
+    path: '/login',
     exact: true,
     component: wrapUnauthenticated(LoginPage)
   },
@@ -44,7 +44,7 @@ const routes = [
   {
     path: '/',
     exact: true,
-    component: props => <WithAuth {...props} />,
+    component: props => <Authenticator {...props} />,
     routes: [
       {
         path: '/dashboard',
@@ -55,7 +55,7 @@ const routes = [
   },
   {
     path: '/facilities',
-    component: props => <WithAuth {...props} />,
+    component: props => <Authenticator {...props} />,
     routes: [
       {
         path: '/facilities/search',

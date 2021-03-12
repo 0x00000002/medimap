@@ -1,21 +1,31 @@
 import React from 'react'
-import { Router } from 'react-router-dom'
-import { renderRoutes } from 'react-router-config'
-import routes from './../routes'
-import { createBrowserHistory } from 'history'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+// import routes from './../routes'
 import ErrorBoundary from './ErrorBoundary'
-import { AppContext } from './../hooks/'
 import './../assets/css/App.css'
-
-const history = createBrowserHistory()
+import { ProvideAuth, PrivateRoute } from './Authenticator'
+import { AddNew, Facilities, Dashboard, LoginPage } from '../pages'
 
 const App = props => {
   return (
-    <Router history={history}>
+    <Router>
       <ErrorBoundary>
-        <AppContext.Provider value={{}}>
-          {renderRoutes(routes)}
-        </AppContext.Provider>
+        <ProvideAuth>
+          <Switch>
+            <Route path='/login'>
+              <LoginPage />
+            </Route>
+            <PrivateRoute exact path='/'>
+              <Dashboard />
+            </PrivateRoute>
+            <PrivateRoute path='/facilities'>
+              <Facilities />
+            </PrivateRoute>
+            <PrivateRoute path='/facilites/add'>
+              <AddNew />
+            </PrivateRoute>
+          </Switch>
+        </ProvideAuth>
       </ErrorBoundary>
     </Router>
   )
