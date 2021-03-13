@@ -43,14 +43,16 @@ export default function NestedGrid () {
       <React.Fragment>
         <Grid item xs={4} className={classes.withLink}>
           <Link className={classes.link} to='/facilities'>
-            <Paper className={[classes.paper, classes.red]}>Facilities</Paper>
+            <Paper className={`${classes.paper} ${classes.red}`}>
+              Facilities
+            </Paper>
           </Link>
         </Grid>
         <Grid item xs={4}>
-          <Paper className={[classes.paper, classes.lightBlue]}> </Paper>
+          <Paper className={`${classes.paper} ${classes.lightBlue}`}> </Paper>
         </Grid>
         <Grid item xs={4}>
-          <Paper className={[classes.paper, classes.darkBlue]}> </Paper>
+          <Paper className={`${classes.paper} ${classes.darkBlue}`}> </Paper>
         </Grid>
       </React.Fragment>
     )
@@ -60,13 +62,13 @@ export default function NestedGrid () {
     return (
       <React.Fragment>
         <Grid item xs={4}>
-          <Paper className={[classes.paper, classes.yellow]}> </Paper>
+          <Paper className={`${classes.paper} ${classes.yellow}`}> </Paper>
         </Grid>
         <Grid item xs={4}>
-          <Paper className={[classes.paper, classes.green]}> </Paper>
+          <Paper className={`${classes.paper} ${classes.green}`}> </Paper>
         </Grid>
         <Grid item xs={4}>
-          <Paper className={[classes.paper, classes.purple]}> </Paper>
+          <Paper className={`${classes.paper} ${classes.purple}`}> </Paper>
         </Grid>
       </React.Fragment>
     )
