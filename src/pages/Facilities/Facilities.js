@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import Page from '../../layouts/Page'
+import { AddNew } from './'
 import { DataGrid } from '@material-ui/data-grid'
-import { columns, data as rows } from './../../assets/_testdata'
+import { columns, data } from './../../assets/_testdata'
 import { makeStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import InputBase from '@material-ui/core/InputBase'
@@ -10,6 +11,10 @@ import Divider from '@material-ui/core/Divider'
 import IconButton from '@material-ui/core/IconButton'
 import SearchIcon from '@material-ui/icons/Search'
 import AddIcon from '@material-ui/icons/Add'
+import * as R from 'ramda'
+
+const addId = obj => R.assoc('id', obj.ID, obj)
+const init = R.map(addId)(data)
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -40,13 +45,24 @@ const useStyles = makeStyles(theme => ({
 
 export const Facilities = props => {
   const [name, setName] = useState('')
+  const [rows, setRows] = useState(init)
+  const [modal, openModal] = React.useState(false)
+
+  const handleModal = state => openModal(state)
   const handleSearch = event => setName(event.target.value)
+
+  const handleAdd = event => {
+    handleModal(true)
+    const newArr = [...rows]
+    setRows(newArr)
+  }
 
   return (
     <Page title='Facilities search'>
-      <h1>Facilities </h1>
-      <FacilitiesSearch onType={handleSearch} name={name} />
-      <FacilitiesList name={name} />
+      <h1>Facilities search</h1>
+      <FacilitiesSearch onType={handleSearch} onAdd={handleAdd} name={name} />
+      <FacilitiesList name={name} rows={rows} />
+      <AddNew open={modal} />
     </Page>
   )
 }
@@ -63,15 +79,15 @@ export const FacilitiesSearch = props => {
         onChange={props.onType}
         value={props.name}
       />
-      <IconButton
-        type='submit'
-        className={classes.iconButton}
-        aria-label='search'
-      >
+      <IconButton className={classes.iconButton} aria-label='search'>
         <SearchIcon />
       </IconButton>
       <Divider className={classes.divider} orientation='vertical' />
-      <IconButton aria-label='delete' className={classes.margin}>
+      <IconButton
+        aria-label='delete'
+        onClick={props.onAdd}
+        className={classes.margin}
+      >
         <AddIcon />
       </IconButton>
     </Paper>
@@ -80,10 +96,13 @@ export const FacilitiesSearch = props => {
 
 FacilitiesSearch.propTypes = {
   onType: PropTypes.func,
+  onAdd: PropTypes.func,
   name: PropTypes.string
 }
 
 export const FacilitiesList = props => {
+  const { rows, name } = props
+
   return (
     <div style={{ height: 400, width: '100%', marginTop: 30 }}>
       <DataGrid
@@ -100,7 +119,7 @@ export const FacilitiesList = props => {
           items: [
             {
               columnField: 'Sitename',
-              value: props.name,
+              value: name,
               operatorValue: 'contains'
             }
           ]
@@ -111,5 +130,6 @@ export const FacilitiesList = props => {
 }
 
 FacilitiesList.propTypes = {
-  name: PropTypes.string
+  name: PropTypes.string,
+  rows: PropTypes.array
 }
