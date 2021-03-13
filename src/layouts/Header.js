@@ -1,6 +1,6 @@
-import React, { useContext } from 'react'
-// import PropTypes from 'prop-types'
-import { AppContext } from '../hooks'
+/* eslint-disable multiline-ternary */
+import React from 'react'
+import { useAuth } from './../components/Authenticator'
 import { makeStyles } from '@material-ui/core/styles'
 import logo from './../assets/images/logo.svg'
 import AppBar from '@material-ui/core/AppBar'
@@ -9,6 +9,8 @@ import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
 import MenuIcon from '@material-ui/icons/Menu'
+import Avatar from '@material-ui/core/Avatar'
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min'
 
 const useStyles = makeStyles(theme => ({
   logo: { width: 50 },
@@ -16,19 +18,23 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1
   },
   menuButton: {
-    marginRight: theme.spacing(2)
+    marginRight: theme.spacing(2),
+    height: 100
   },
   title: {
     flexGrow: 1
+  },
+  user: {
+    margin: '0 10px',
+    textTransform: 'uppercase'
+  },
+  button: {
+    color: 'white'
   }
 }))
 
 export const Header = props => {
   const classes = useStyles()
-  const { userName, loginFn, logoutFn } = useContext(AppContext)
-
-  const onClick = userName ? logoutFn : loginFn
-  const buttonText = userName ? 'Logout' : 'Login'
 
   return (
     <div className={classes.root}>
@@ -46,17 +52,30 @@ export const Header = props => {
           <Typography variant='h6' className={classes.title}>
             React logo
           </Typography>
-          <Button color='inherit' onClick={onClick}>
-            {buttonText}
-          </Button>
+          <SignOut />
         </Toolbar>
       </AppBar>
     </div>
   )
 }
 
-// Header.propTypes = {
-// userName: PropTypes.bool,
-// loginFn: PropTypes.func.isRequired,
-// logoutFn: PropTypes.func.isRequired
-// }
+const SignOut = () => {
+  const history = useHistory()
+  const { user, signout } = useAuth()
+  const classes = useStyles()
+
+  const onClick = () => signout(() => history.push('/'))
+
+  return user ? (
+    <>
+      <span className={classes.user}>{user}</span>
+      <Avatar alt={user} src='/broken-image.jpg' className={classes.avatar} />
+
+      <Button className={classes.button} onClick={onClick}>
+        Logout
+      </Button>
+    </>
+  ) : (
+    ''
+  )
+}

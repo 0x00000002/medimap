@@ -1,5 +1,5 @@
 /* eslint-disable multiline-ternary */
-import React, { createContext, useContext, useState, useHistory } from 'react'
+import React, { createContext, useContext, useState } from 'react'
 import { Route, Redirect } from 'react-router-dom'
 
 import PropTypes from 'prop-types'
@@ -13,9 +13,9 @@ export const useAuth = () => {
 const useProvideAuth = () => {
   const [user, setUser] = useState(null)
 
-  const signin = cb => {
+  const signin = (name, cb) => {
     return Authenticator.signin(() => {
-      setUser('user')
+      setUser(name)
       cb()
     })
   }
@@ -53,26 +53,6 @@ export const Authenticator = {
     Authenticator.isAuthenticated = false
     setTimeout(cb, 100)
   }
-}
-
-export const AuthButton = () => {
-  const history = useHistory()
-  const auth = useAuth()
-
-  return auth.user ? (
-    <p>
-      Welcome!{' '}
-      <button
-        onClick={() => {
-          auth.signout(() => history.push('/'))
-        }}
-      >
-        Sign out
-      </button>
-    </p>
-  ) : (
-    <p>You are not logged in.</p>
-  )
 }
 
 export const PrivateRoute = ({ children, ...rest }) => {

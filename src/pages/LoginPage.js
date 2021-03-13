@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import Page from '../layouts/Page'
 import { makeStyles } from '@material-ui/core/styles'
@@ -9,7 +9,7 @@ import Card from '@material-ui/core/Card'
 import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
-import { useAuth, AuthButton } from './../components/Authenticator'
+import { useAuth } from './../components/Authenticator'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -37,9 +37,13 @@ export const LoginPage = () => {
   const classes = useStyles()
 
   const { from } = location.state || { from: { pathname: '/' } }
-  console.log({ location, history, auth, from })
+
+  const [name, setUsername] = useState('')
+
+  const onNameChange = event => setUsername(event?.target?.value)
+
   const login = () => {
-    auth.signin(() => {
+    auth.signin(name, () => {
       history.replace(from)
     })
   }
@@ -56,7 +60,12 @@ export const LoginPage = () => {
           <b>www.domain.co.nz{from.pathname}</b>
         </Typography>
         <CardContent>
-          <TextField id='standard-basic' label='Your name' />
+          <TextField
+            id='standard-basic'
+            label='Your name'
+            value={name}
+            onChange={onNameChange}
+          />
         </CardContent>
         <CardActions>
           <Button color='primary' onClick={login}>
