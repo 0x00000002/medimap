@@ -1,23 +1,31 @@
+/* eslint-disable multiline-ternary */
 /* eslint-disable no-undef */
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Helmet, HelmetProvider } from 'react-helmet-async'
 import PropTypes from 'prop-types'
 import { Header, Footer, PageContent } from './'
 
 const Page = props => {
   const { title, children, ...rest } = props
+  const [titleToSet, setTitle] = useState('')
 
-  return (
+  useEffect(() => {
+    title && setTitle(title)
+  }, [title])
+
+  return title ? (
     <div {...rest}>
       <HelmetProvider>
         <Helmet>
-          <title>{title}</title>
+          <title>{titleToSet}</title>
         </Helmet>
         <Header />
         <PageContent>{children}</PageContent>
         <Footer />
       </HelmetProvider>
     </div>
+  ) : (
+    <></>
   )
 }
 

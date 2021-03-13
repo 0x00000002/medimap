@@ -2,16 +2,18 @@
 import React from 'react'
 import { useAuth } from './../components/Authenticator'
 import { makeStyles } from '@material-ui/core/styles'
-import logo from './../assets/images/logo.svg'
+import logo from './../assets/images/logo.png'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import Avatar from '@material-ui/core/Avatar'
+import MenuIcon from '@material-ui/icons/Menu'
+import IconButton from '@material-ui/core/IconButton'
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min'
 
 const useStyles = makeStyles(theme => ({
-  logo: { width: 50 },
+  logo: { width: 50, marginRight: 20 },
   root: {
     flexGrow: 1
   },
@@ -38,17 +40,17 @@ export const Header = props => {
     <div className={classes.root}>
       <AppBar position='static'>
         <Toolbar>
-          {/*   <IconButton
+          <IconButton
             edge='start'
             className={classes.menuButton}
             color='inherit'
             aria-label='menu'
           >
             <MenuIcon />
-          </IconButton> */}
+          </IconButton>
           <img src={logo} alt='logo' className={classes.logo} />
           <Typography variant='h6' className={classes.title}>
-            React logo
+            Medi Map
           </Typography>
           <SignOut />
         </Toolbar>
