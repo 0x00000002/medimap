@@ -1,5 +1,6 @@
 /* eslint-disable multiline-ternary */
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { useAuth } from './../components/Authenticator'
 import { makeStyles } from '@material-ui/core/styles'
 import logo from './../assets/images/logo.png'
@@ -30,6 +31,14 @@ const useStyles = makeStyles(theme => ({
   },
   button: {
     color: 'white'
+  },
+  link: {
+    color: '#ddd',
+    textDecoration: 'none',
+    '&:hover': {
+      color: 'white',
+      transition: '0.3s'
+    }
   }
 }))
 
@@ -50,7 +59,9 @@ export const Header = props => {
           </IconButton>
           <img src={logo} alt='logo' className={classes.logo} />
           <Typography variant='h6' className={classes.title}>
-            Medi Map
+            <Link className={classes.link} to='/'>
+              Medi Map
+            </Link>
           </Typography>
           <SignOut />
         </Toolbar>

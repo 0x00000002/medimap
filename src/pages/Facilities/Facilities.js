@@ -41,7 +41,6 @@ const useStyles = makeStyles(theme => ({
 export const Facilities = props => {
   const [name, setName] = useState('')
   const handleSearch = event => setName(event.target.value)
-  const classes = useStyles()
 
   return (
     <Page title='Facilities search'>
