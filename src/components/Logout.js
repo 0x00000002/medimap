@@ -3,12 +3,12 @@ import React, { useEffect, useState } from 'react'
 import Snackbar from '@material-ui/core/Snackbar'
 import MuiAlert from '@material-ui/lab/Alert'
 
+const warningTime = 1000 * 60 * 3
+const events = ['load', 'mousemove', 'mousedown', 'click', 'scroll', 'keypress']
+
 function Alert (props) {
   return <MuiAlert elevation={6} variant='filled' {...props} />
 }
-
-const warningTime = 3000 // 3 sec rather than 3 min, just to show the alert
-const events = ['load', 'mousemove', 'mousedown', 'click', 'scroll', 'keypress']
 
 const LogoutPopup = () => {
   const [alert, setAlert] = useState(false)
