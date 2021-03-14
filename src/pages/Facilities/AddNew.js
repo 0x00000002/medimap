@@ -1,4 +1,5 @@
-import React from 'react'
+/* eslint-disable indent */
+import React, { useState, createRef } from 'react'
 import Modal from '@material-ui/core/Modal'
 import PropTypes from 'prop-types'
 import { makeStyles } from '@material-ui/core/styles'
@@ -7,7 +8,8 @@ import IconButton from '@material-ui/core/IconButton'
 import Card from '@material-ui/core/Card'
 import CardHeader from '@material-ui/core/CardHeader'
 import CardContent from '@material-ui/core/CardContent'
-
+import Snackbar from '@material-ui/core/Snackbar'
+import MuiAlert from '@material-ui/lab/Alert'
 import CloseIcon from '@material-ui/icons/Close'
 import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
@@ -17,6 +19,10 @@ import FormHelperText from '@material-ui/core/FormHelperText'
 import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
 import TextField from '@material-ui/core/TextField'
+
+function Alert (props) {
+  return <MuiAlert elevation={6} variant='filled' {...props} />
+}
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -93,12 +99,14 @@ AddNew.propTypes = {
 const FacilityForm = ({ data }) => {
   const { id, onAdd } = data
 
-  const [region, setRegion] = React.useState('')
-  const [month, setMonth] = React.useState('')
-  const [sitename, setSitename] = React.useState('')
-  const [email, setEmail] = React.useState('')
-  const [address, setAddress] = React.useState('')
-  const [country, setCountry] = React.useState('')
+  const [region, setRegion] = useState('')
+  const [month, setMonth] = useState('')
+  const [sitename, setSitename] = useState('')
+  const [email, setEmail] = useState('')
+  const [address, setAddress] = useState('')
+  const [country, setCountry] = useState('')
+  const [alert, setAlert] = useState(false)
+  const [missed, setMissed] = useState('')
 
   const handleChangeRegion = event => setRegion(event.target.value)
   const handleChangeMonth = event => setMonth(event.target.value)
@@ -106,21 +114,34 @@ const FacilityForm = ({ data }) => {
   const handleChangeCountry = event => setCountry(event.target.value)
   const handleChangeAddress = event => setAddress(event.target.value)
   const handleChangeEmail = event => setEmail(event.target.value)
+
   const handleSubmit = event => {
+    const err = []
     event.preventDefault()
-    onAdd({
-      id,
-      ID: id,
-      Sitename: sitename,
-      Email: email,
-      Address: address,
-      Country: country,
-      StartMonth: month,
-      Regionid: region
-    })
+    !sitename && err.push('Sitename')
+    !country && err.push('Country')
+    !address && err.push('Address')
+    !month && err.push('Start month')
+    !region && err.push('Region')
+
+    setMissed(err.join(', '))
+
+    err.length !== 0
+      ? setAlert(true)
+      : onAdd({
+          id,
+          ID: id,
+          Sitename: sitename,
+          Email: email,
+          Address: address,
+          Country: country,
+          StartMonth: month,
+          Regionid: region
+        })
   }
 
   const classes = useStyles()
+  const wrapper = createRef()
 
   return (
     <form
@@ -179,7 +200,7 @@ const FacilityForm = ({ data }) => {
         </Grid>
         <Grid item xs={12} sm={6}>
           <Paper className={classes.cell}>
-            <FormControl required className={classes.formControl}>
+            <FormControl required className={classes.formControl} ref={wrapper}>
               <InputLabel id='start-month-select-label'>Start Month</InputLabel>
               <Select
                 labelId='start-month-select-label'
@@ -236,6 +257,15 @@ const FacilityForm = ({ data }) => {
           </Paper>
         </Grid>
       </Grid>
+      <Snackbar
+        open={alert}
+        autoHideDuration={6000}
+        onClose={() => setAlert(false)}
+      >
+        <Alert severity='error'>
+          Some required fields are missed: {missed}
+        </Alert>
+      </Snackbar>
     </form>
   )
 }
