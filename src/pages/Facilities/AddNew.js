@@ -1,5 +1,5 @@
 /* eslint-disable indent */
-import React, { useState, createRef } from 'react'
+import React, { useState } from 'react'
 import Modal from '@material-ui/core/Modal'
 import PropTypes from 'prop-types'
 import { makeStyles } from '@material-ui/core/styles'
@@ -19,6 +19,7 @@ import FormHelperText from '@material-ui/core/FormHelperText'
 import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
 import TextField from '@material-ui/core/TextField'
+import LogoutPopup from '../../components/Logout'
 
 function Alert (props) {
   return <MuiAlert elevation={6} variant='filled' {...props} />
@@ -141,7 +142,6 @@ const FacilityForm = ({ data }) => {
   }
 
   const classes = useStyles()
-  const wrapper = createRef()
 
   return (
     <form
@@ -200,7 +200,7 @@ const FacilityForm = ({ data }) => {
         </Grid>
         <Grid item xs={12} sm={6}>
           <Paper className={classes.cell}>
-            <FormControl required className={classes.formControl} ref={wrapper}>
+            <FormControl required className={classes.formControl}>
               <InputLabel id='start-month-select-label'>Start Month</InputLabel>
               <Select
                 labelId='start-month-select-label'
@@ -257,6 +257,7 @@ const FacilityForm = ({ data }) => {
           </Paper>
         </Grid>
       </Grid>
+      <LogoutPopup />
       <Snackbar
         open={alert}
         autoHideDuration={6000}

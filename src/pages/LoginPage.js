@@ -49,7 +49,7 @@ export const LoginPage = () => {
   }
 
   return (
-    <Page title={'Login page'}>
+    <Page title='Login page'>
       <Card className={classes.root} width='300' variant='outlined'>
         <Typography
           className={classes.title}
@@ -57,7 +57,7 @@ export const LoginPage = () => {
           gutterBottom
         >
           You must log in to view the page at{' '}
-          <b>www.domain.co.nz{from.pathname}</b>
+          <b>medimap.co.nz{from.pathname}</b>
         </Typography>
         <CardContent>
           <TextField

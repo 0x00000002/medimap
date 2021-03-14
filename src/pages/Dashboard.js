@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 
 export const Dashboard = props => {
   return (
-    <Page title={'Dashboard'}>
+    <Page title='Dashboard'>
       <NestedGrid />
     </Page>
   )
@@ -40,7 +40,7 @@ export default function NestedGrid () {
 
   const Row1 = () => {
     return (
-      <React.Fragment>
+      <>
         <Grid item xs={4} className={classes.withLink}>
           <Link className={classes.link} to='/facilities'>
             <Paper className={`${classes.paper} ${classes.red}`}>
@@ -54,13 +54,13 @@ export default function NestedGrid () {
         <Grid item xs={4}>
           <Paper className={`${classes.paper} ${classes.darkBlue}`}> </Paper>
         </Grid>
-      </React.Fragment>
+      </>
     )
   }
 
   const Row2 = () => {
     return (
-      <React.Fragment>
+      <>
         <Grid item xs={4}>
           <Paper className={`${classes.paper} ${classes.yellow}`}> </Paper>
         </Grid>
@@ -70,7 +70,7 @@ export default function NestedGrid () {
         <Grid item xs={4}>
           <Paper className={`${classes.paper} ${classes.purple}`}> </Paper>
         </Grid>
-      </React.Fragment>
+      </>
     )
   }
 
