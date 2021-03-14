@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import Page from '../../layouts/Page'
 import { AddNew } from './'
@@ -15,6 +15,8 @@ import * as R from 'ramda'
 
 const addId = obj => R.assoc('id', obj.ID, obj)
 const init = R.map(addId)(data)
+const getIDs = R.map(R.prop('id'))
+const getNewId = arr => Math.max(...getIDs(arr)) + 1
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -46,7 +48,8 @@ const useStyles = makeStyles(theme => ({
 export const Facilities = props => {
   const [name, setName] = useState('')
   const [rows, setRows] = useState(init)
-  const [modal, openModal] = React.useState(false)
+  const [modal, openModal] = useState(false)
+  const [id, newId] = useState(getNewId(rows))
 
   const handleModal = state => openModal(state)
   const handleSearch = event => setName(event.target.value)
@@ -56,6 +59,10 @@ export const Facilities = props => {
     setRows(newArr)
     handleModal(false)
   }
+
+  useEffect(() => {
+    newId(getNewId(rows))
+  }, [rows])
 
   return (
     <Page title='Facilities search'>
@@ -69,7 +76,7 @@ export const Facilities = props => {
       <AddNew
         data={{
           open: modal,
-          id: 6,
+          id,
           onClose: () => handleModal(false),
           onAdd: handleAdd
         }}

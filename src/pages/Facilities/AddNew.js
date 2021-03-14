@@ -54,6 +54,7 @@ const useStyles = makeStyles(theme => ({
 export const AddNew = ({ data }) => {
   const classes = useStyles()
   const { open, onClose } = data
+
   return (
     <Modal
       open={false || open}
