@@ -4,172 +4,245 @@ import PropTypes from 'prop-types'
 import { makeStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import IconButton from '@material-ui/core/IconButton'
-import clsx from 'clsx'
 import Card from '@material-ui/core/Card'
 import CardHeader from '@material-ui/core/CardHeader'
-import CardMedia from '@material-ui/core/CardMedia'
 import CardContent from '@material-ui/core/CardContent'
-import CardActions from '@material-ui/core/CardActions'
-import Collapse from '@material-ui/core/Collapse'
-import Avatar from '@material-ui/core/Avatar'
-import Typography from '@material-ui/core/Typography'
-import { red } from '@material-ui/core/colors'
-import FavoriteIcon from '@material-ui/icons/Favorite'
-import ShareIcon from '@material-ui/icons/Share'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import CloseIcon from '@material-ui/icons/Close'
 
-const testOne = {
-  Address: '12 Seaspray Drive, Bayfair, Tauranga',
-  Country: 'New Zealand',
-  Email: 'tauranga@nofacility.com',
-  ID: 6,
-  Regionid: 15,
-  Sitename: 'Bayfair Tauranga',
-  StartMonth: 'March',
-  id: 6
-}
+import CloseIcon from '@material-ui/icons/Close'
+import Grid from '@material-ui/core/Grid'
+import Button from '@material-ui/core/Button'
+import InputLabel from '@material-ui/core/InputLabel'
+import MenuItem from '@material-ui/core/MenuItem'
+import FormHelperText from '@material-ui/core/FormHelperText'
+import FormControl from '@material-ui/core/FormControl'
+import Select from '@material-ui/core/Select'
+import TextField from '@material-ui/core/TextField'
 
 const useStyles = makeStyles(theme => ({
-  paper: {
-    width: 400,
-    margin: '0 auto',
-    backgroundColor: theme.palette.background.paper,
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
-    display: 'flex'
-  },
   root: {
-    maxWidth: 345
+    maxWidth: 700,
+    margin: '5% auto',
+    border: 0
   },
-  media: {
-    height: 0,
-    paddingTop: '56.25%' // 16:9
+  form: {},
+  content: {},
+  header: {
+    margin: '30px 20px 10px 40px'
   },
-  expand: {
-    transform: 'rotate(0deg)',
-    marginLeft: 'auto',
-    transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration.shortest
-    })
+  grid: {},
+  cell: {
+    border: 0,
+    boxShadow: 'none',
+    justifyContent: 'center',
+    display: 'flex',
+    padding: '10px',
+    margin: 0
   },
-  expandOpen: {
-    transform: 'rotate(180deg)'
+  bttn: {
+    width: '200px',
+    padding: '10px 40px',
+    margin: '30px 0 50px'
   },
-  avatar: {
-    backgroundColor: red[500]
+  formControl: {
+    width: 250
+  },
+  text: {
+    width: 250
   }
 }))
 
-export const AddNew = props => {
+export const AddNew = ({ data }) => {
   const classes = useStyles()
-
+  const { open, onClose } = data
   return (
-    <div>
-      <Modal
-        open={false || props.open}
-        onClose={() => props.handleModal(false)}
-        aria-labelledby='simple-modal-title'
-        aria-describedby='simple-modal-description'
-      >
-        <FacilityForm onClose={() => props.handleModal(false)} />
-      </Modal>
-    </div>
-  )
-}
-
-AddNew.propTypes = {
-  handleModal: PropTypes.func,
-  open: PropTypes.bool
-}
-
-const FacilityForm = props => {
-  const classes = useStyles()
-  const [expanded, setExpanded] = React.useState(false)
-
-  const handleExpandClick = () => {
-    setExpanded(!expanded)
-  }
-
-  return (
-    <Paper component='form' className={classes.paper}>
+    <Modal
+      open={false || open}
+      onClose={onClose}
+      aria-labelledby='simple-modal-title'
+      aria-describedby='simple-modal-description'
+    >
       <Card className={classes.root}>
         <CardHeader
           action={
-            <IconButton aria-label='settings' onClick={props.onClose}>
+            <IconButton aria-label='settings' onClick={onClose}>
               <CloseIcon />
             </IconButton>
           }
           title='Add new facility'
-          subheader='Please, fill the form'
+          subheader='* Mandatory fields'
+          className={classes.header}
         />
-        <CardMedia
-          className={classes.media}
-          image='/static/images/cards/paella.jpg'
-          title='Paella dish'
-        />
-        <CardContent>
-          <Typography variant='body2' color='textSecondary' component='p'>
-            This impressive paella is a perfect party dish and a fun meal to
-            cook together with your guests. Add 1 cup of frozen peas along with
-            the mussels, if you like.
-          </Typography>
+        <CardContent className={classes.content}>
+          <FacilityForm data={data} />
         </CardContent>
-        <CardActions disableSpacing>
-          <IconButton aria-label='add to favorites'>
-            <FavoriteIcon />
-          </IconButton>
-          <IconButton aria-label='share'>
-            <ShareIcon />
-          </IconButton>
-          <IconButton
-            className={clsx(classes.expand, {
-              [classes.expandOpen]: expanded
-            })}
-            onClick={handleExpandClick}
-            aria-expanded={expanded}
-            aria-label='show more'
-          >
-            <ExpandMoreIcon />
-          </IconButton>
-        </CardActions>
-        <Collapse in={expanded} timeout='auto' unmountOnExit>
-          <CardContent>
-            <Typography paragraph>Method:</Typography>
-            <Typography paragraph>
-              Heat 1/2 cup of the broth in a pot until simmering, add saffron
-              and set aside for 10 minutes.
-            </Typography>
-            <Typography paragraph>
-              Heat oil in a (14- to 16-inch) paella pan or a large, deep skillet
-              over medium-high heat. Add chicken, shrimp and chorizo, and cook,
-              stirring occasionally until lightly browned, 6 to 8 minutes.
-              Transfer shrimp to a large plate and set aside, leaving chicken
-              and chorizo in the pan. Add pimentón, bay leaves, garlic,
-              tomatoes, onion, salt and pepper, and cook, stirring often until
-              thickened and fragrant, about 10 minutes. Add saffron broth and
-              remaining 4 1/2 cups chicken broth; bring to a boil.
-            </Typography>
-            <Typography paragraph>
-              Add rice and stir very gently to distribute. Top with artichokes
-              and peppers, and cook without stirring, until most of the liquid
-              is absorbed, 15 to 18 minutes. Reduce heat to medium-low, add
-              reserved shrimp and mussels, tucking them down into the rice, and
-              cook again without stirring, until mussels have opened and rice is
-              just tender, 5 to 7 minutes more. (Discard any mussels that don’t
-              open.)
-            </Typography>
-            <Typography>
-              Set aside off of the heat to let rest for 10 minutes, and then
-              serve.
-            </Typography>
-          </CardContent>
-        </Collapse>
       </Card>
-    </Paper>
+    </Modal>
+  )
+}
+
+AddNew.propTypes = {
+  data: PropTypes.shape({
+    onClose: PropTypes.func,
+    open: PropTypes.bool,
+    id: PropTypes.number,
+    onAdd: PropTypes.func
+  })
+}
+
+const FacilityForm = ({ data }) => {
+  const { id, onAdd } = data
+
+  const [region, setRegion] = React.useState('')
+  const [month, setMonth] = React.useState('')
+  const [sitename, setSitename] = React.useState('')
+  const [email, setEmail] = React.useState('')
+  const [address, setAddress] = React.useState('')
+  const [country, setCountry] = React.useState('')
+
+  const handleChangeRegion = event => setRegion(event.target.value)
+  const handleChangeMonth = event => setMonth(event.target.value)
+  const handleChangeSitename = event => setSitename(event.target.value)
+  const handleChangeCountry = event => setCountry(event.target.value)
+  const handleChangeAddress = event => setAddress(event.target.value)
+  const handleChangeEmail = event => setEmail(event.target.value)
+  const handleSubmit = event => {
+    event.preventDefault()
+    onAdd({
+      id,
+      ID: id,
+      Sitename: sitename,
+      Email: email,
+      Address: address,
+      Country: country,
+      StartMonth: month,
+      Regionid: region
+    })
+  }
+
+  const classes = useStyles()
+
+  return (
+    <form
+      className={classes.form}
+      onSubmit={handleSubmit}
+      noValidate
+      autoComplete='off'
+    >
+      <Grid container className={classes.grid} spacing={1}>
+        <Grid item xs={12} sm={6}>
+          <Paper className={classes.cell}>
+            <TextField
+              required
+              id='sitename'
+              label='Sitename'
+              value={sitename}
+              onChange={handleChangeSitename}
+              className={classes.text}
+            />
+          </Paper>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <Paper className={classes.cell}>
+            <TextField
+              required
+              id='address'
+              label='Address'
+              value={address}
+              onChange={handleChangeAddress}
+              className={classes.text}
+            />
+          </Paper>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <Paper className={classes.cell}>
+            <TextField
+              id='email'
+              label='Email'
+              onChange={handleChangeEmail}
+              value={email}
+              className={classes.text}
+            />
+          </Paper>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <Paper className={classes.cell}>
+            <TextField
+              required
+              id='country'
+              label='Country'
+              value={country}
+              onChange={handleChangeCountry}
+              className={classes.text}
+            />
+          </Paper>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <Paper className={classes.cell}>
+            <FormControl required className={classes.formControl}>
+              <InputLabel id='start-month-select-label'>Start Month</InputLabel>
+              <Select
+                labelId='start-month-select-label'
+                id='start-month-select'
+                value={month}
+                onChange={handleChangeMonth}
+              >
+                <MenuItem value={'January'}>January</MenuItem>
+                <MenuItem value={'February'}>February</MenuItem>
+                <MenuItem value={'March'}>March</MenuItem>
+                <MenuItem value={'April'}>April</MenuItem>
+                <MenuItem value={'May'}>May</MenuItem>
+                <MenuItem value={'June'}>June</MenuItem>
+                <MenuItem value={'July'}>July</MenuItem>
+                <MenuItem value={'August'}>August</MenuItem>
+                <MenuItem value={'September'}>September</MenuItem>
+                <MenuItem value={'October'}>October</MenuItem>
+                <MenuItem value={'November'}>November</MenuItem>
+                <MenuItem value={'December'}>December</MenuItem>
+              </Select>
+              <FormHelperText>Potentially</FormHelperText>
+            </FormControl>
+          </Paper>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <Paper className={classes.cell}>
+            <FormControl className={classes.formControl}>
+              <InputLabel id='region-select-label'>Region</InputLabel>
+              <Select
+                labelId='region-select-label'
+                id='region-select'
+                value={region}
+                onChange={handleChangeRegion}
+              >
+                <MenuItem value={1}>Northland</MenuItem>
+                <MenuItem value={2}>Auckland</MenuItem>
+                <MenuItem value={3}>Canterbury</MenuItem>
+                <MenuItem value={4}>West Coast</MenuItem>
+                <MenuItem value={5}>Wellington</MenuItem>
+              </Select>
+            </FormControl>
+          </Paper>
+        </Grid>
+        <Grid item xs={12}>
+          <Paper className={classes.cell}>
+            <Button
+              color='primary'
+              type='submit'
+              variant='outlined'
+              className={classes.bttn}
+            >
+              Save
+            </Button>
+          </Paper>
+        </Grid>
+      </Grid>
+    </form>
   )
 }
 
 FacilityForm.propTypes = {
-  onClose: PropTypes.func
+  data: PropTypes.shape({
+    onClose: PropTypes.func,
+    onAdd: PropTypes.func,
+    id: PropTypes.number
+  })
 }

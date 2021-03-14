@@ -51,18 +51,29 @@ export const Facilities = props => {
   const handleModal = state => openModal(state)
   const handleSearch = event => setName(event.target.value)
 
-  const handleAdd = event => {
-    handleModal(true)
-    const newArr = [...rows]
+  const handleAdd = el => {
+    const newArr = [...rows, el]
     setRows(newArr)
+    handleModal(false)
   }
 
   return (
     <Page title='Facilities search'>
       <h1>Facilities search</h1>
-      <FacilitiesSearch onType={handleSearch} onAdd={handleAdd} name={name} />
+      <FacilitiesSearch
+        onType={handleSearch}
+        onClickAddButton={() => handleModal(true)}
+        name={name}
+      />
       <FacilitiesList name={name} rows={rows} />
-      <AddNew open={modal} />
+      <AddNew
+        data={{
+          open: modal,
+          id: 6,
+          onClose: () => handleModal(false),
+          onAdd: handleAdd
+        }}
+      />
     </Page>
   )
 }
@@ -85,7 +96,7 @@ export const FacilitiesSearch = props => {
       <Divider className={classes.divider} orientation='vertical' />
       <IconButton
         aria-label='delete'
-        onClick={props.onAdd}
+        onClick={props.onClickAddButton}
         className={classes.margin}
       >
         <AddIcon />
@@ -96,7 +107,7 @@ export const FacilitiesSearch = props => {
 
 FacilitiesSearch.propTypes = {
   onType: PropTypes.func,
-  onAdd: PropTypes.func,
+  onClickAddButton: PropTypes.func,
   name: PropTypes.string
 }
 
